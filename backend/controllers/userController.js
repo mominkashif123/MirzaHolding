@@ -2,11 +2,11 @@ import User from '../models/User.js';
 import mongoose from 'mongoose';
 import nodemailer from 'nodemailer';
 import otpGenerator from 'otp-generator';
-import TemporaryUser from '../models/Temp.js'; // Adjust the path as necessary
+import TemporaryUser from '../models/Temp.js'; 
 import dotenv from 'dotenv';
 
 const transporter = nodemailer.createTransport({
-    service: 'Gmail', // or any other email service you prefer
+    service: 'Gmail',
     auth: {
         user: process.env.EMAIL,
         pass: process.env.PASSKEY,
@@ -21,19 +21,15 @@ export const Signup = async (req, res) => {
     }
 
     try {
-        // Check if the user already exists
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ error: 'User already exists.' });
         }
 
-        // Generate OTP
         const otp = otpGenerator.generate(6, { upperCase: false, specialChars: false });
 
-        // Create user with OTP and not verified status
         await User.create({ email, password, otp, isVerified: false });
 
-        // Send OTP email
         const mailOptions = {
             from: 'momin.kashif81@gmail.com',
             to: email,
@@ -58,7 +54,6 @@ export const Signup = async (req, res) => {
 
 export const sendOtp = async (req, res) => {
     const { email, password } = req.body;
-    // console.log(email, password);
 
     if (!email || !password) {
         return res.status(400).json({ error: 'Email and password are required.' });
@@ -73,7 +68,6 @@ export const sendOtp = async (req, res) => {
         const otp = otpGenerator.generate(6, { upperCase: false, specialChars: false });
         console.log(otp);
 
-        // Save OTP and password temporarily
         await TemporaryUser.create({ email, password, otp });
 
         const mailOptions = { 
@@ -134,7 +128,7 @@ export const Login = async (req, res) => {
 
 export const UserData = async (req, res) => {
     try {
-        const { email } = req.query; // Get email from query parameters
+        const { email } = req.query; 
 
         if (!email) {
             return res.status(400).json({ message: 'Email is required' });

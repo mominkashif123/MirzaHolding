@@ -25,7 +25,7 @@ export const getUsers = async (req, res) => {
 
         const formattedUsers = users.map(user => ({
             email: user.email,
-            amount: user.amount.toString(), // Convert Decimal to string
+            amount: user.amount.toString(), 
             transactions: user.transactions
         }));
 
@@ -37,15 +37,15 @@ export const getUsers = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
-    const { email } = req.params; // Get email from params
+    const { email } = req.params; 
     const { amount, transactions } = req.body;
 
     try {
-        const amountDecimal = parseFloat(amount); // Convert amount to decimal
+        const amountDecimal = parseFloat(amount);
         const updatedUser = await User.findOneAndUpdate(
-            { email: email }, // Query by email
+            { email: email }, 
             { amount: amountDecimal, transactions },
-            { new: true } // Return the updated document
+            { new: true } 
         );
 
         if (!updatedUser) {
