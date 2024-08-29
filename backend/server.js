@@ -19,9 +19,21 @@ mongoose.connect(process.env.MONGO_URI)
 const app = express();
 
 // Middleware
-app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// CORS configuration
+const allowedOrigins = ['https://mirza-holding.vercel.app'];
+app.use(cors({
+  origin: (origin, callback) => {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,  // This allows cookies to be sent across domains
+}));
 
 // Routes
 app.use("/api", userRoutes);
