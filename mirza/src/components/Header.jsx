@@ -14,10 +14,10 @@ const Header = () => {
             style={{ backgroundImage: `url(${bgimg})` }}
         >
             <div 
-                className={`w-1/2 p-8 text-white text-center transition-opacity duration-1000 ${fadeIn ? 'opacity-100' : 'opacity-0'}`}
+                className={`w-3/4 p-8 text-white text-center transition-opacity duration-1000 ${fadeIn ? 'opacity-100' : 'opacity-0'}`}
             >
-                <h1 className="text-4xl md:text-6xl lg:text-8xl font-bold font-baskervville">Mirza Holding</h1>
-                <p className="mt-4 text-xl md:text-2xl lg:text-4xl font-alata">
+                <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-8xl font-bold font-baskervville">Mirza Holding</h1>
+                <p className="mt-4 text-lg sm:text-xl md:text-2xl lg:text-4xl font-alata">
                     A company built to build you.
                 </p>
             </div>

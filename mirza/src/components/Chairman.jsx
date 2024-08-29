@@ -11,7 +11,7 @@ const ChairmanMessage = () => {
     });
 
     return (
-        <div ref={ref} id="chairman" className="flex flex-col md:flex-row items-center justify-center min-h-screen p-8 bg-gray-200">
+        <div ref={ref} id="chairman" className="overflow-hidden flex flex-col md:flex-row items-center justify-center min-h-screen p-8 bg-gray-200">
             {/* Left side - Image */}
             <motion.div
                 variants={slideIn('left', 'spring', 0.4, 0.75)}
