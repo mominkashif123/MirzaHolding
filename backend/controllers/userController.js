@@ -75,7 +75,7 @@ export const sendOtp = async (req, res) => {
         // Save OTP and password temporarily
         await TemporaryUser.create({ email, password, otp });
 
-        const mailOptions = {
+        const mailOptions = { 
             from: 'your-email@gmail.com',
             to: email,
             subject: 'Your OTP Code',
