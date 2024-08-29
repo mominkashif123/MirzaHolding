@@ -10,15 +10,15 @@ const Header = () => {
 
     return (
         <div 
-            className="h-[90vh] mt-[10vh] bg-cover bg-center flex items-center" 
+            className="h-[90vh] mt-[10vh] bg-cover bg-center flex justify-center items-center" 
             style={{ backgroundImage: `url(${bgimg})` }}
         >
             <div 
-                className={`w-1/2 p-8 text-white transition-opacity duration-1000 ${fadeIn ? 'opacity-100' : 'opacity-0'}`}
+                className={`w-1/2 p-8 text-white text-center transition-opacity duration-1000 ${fadeIn ? 'opacity-100' : 'opacity-0'}`}
             >
-                <h1 className="text-6xl font-bold font-baskervville">Mirza Holding</h1>
-                <p className="mt-4 text-lg font-alata">
-                    This is where your descriptive text goes. You can add more content here to explain what the section is about.
+                <h1 className="text-4xl md:text-6xl lg:text-8xl font-bold font-baskervville">Mirza Holding</h1>
+                <p className="mt-4 text-xl md:text-2xl lg:text-4xl font-alata">
+                    A company built to build you.
                 </p>
             </div>
         </div>

@@ -3,12 +3,13 @@ import mongoose from 'mongoose';
 import nodemailer from 'nodemailer';
 import otpGenerator from 'otp-generator';
 import TemporaryUser from '../models/Temp.js'; // Adjust the path as necessary
+import dotenv from 'dotenv';
 
 const transporter = nodemailer.createTransport({
     service: 'Gmail', // or any other email service you prefer
     auth: {
-        user: 'momin.kashif81@gmail.com',
-        pass: 'xgfsqwczgnzfcnyo',
+        user: process.env.EMAIL,
+        pass: process.env.PASSKEY,
     },
 });
 

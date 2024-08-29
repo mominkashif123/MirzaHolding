@@ -11,6 +11,7 @@ import ProtectedRoute from './components/ProtectedRoute.jsx';
 import Dashboard from './components/Dashboard.jsx';
 import AdminLogin from './components/Adminlogin.jsx';
 import AdminDashboard from './components/Admindashboard.jsx';
+import FinancialOverview from './components/Finance.jsx';
 
 const App = () => {
     return (
@@ -21,6 +22,7 @@ const App = () => {
                 <Route path="/private" element={<PrivateServices />} />
                 <Route path="/corporate" element={<CorpServices />} />
                 <Route path="/contact" element={<ContactUs />} />
+                <Route path="/finance" element={<FinancialOverview />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/dashboard" element={

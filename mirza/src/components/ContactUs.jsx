@@ -8,13 +8,13 @@ const ContactUs = () => {
     return (
         <>
             <Navbar />
-            <div className="min-h-[90vh] bg-gray-200 flex mt-[10vh]">
-                <div className="w-2/3 flex flex-col px-8 py-12">
+            <div className="min-h-[90vh] bg-gray-200 flex flex-col md:flex-row mt-[10vh]">
+                <div className="md:w-2/3 w-full flex flex-col px-8 py-12">
                     <div className="flex flex-col justify-center items-center flex-1 mb-12">
-                        <h1 className="text-6xl font-bold mb-4 font-baskervville">LOGIN TO YOUR ACCOUNT</h1>
+                        <h1 className="text-6xl font-bold mb-4 font-baskervville text-center">LOGIN TO YOUR ACCOUNT</h1>
                         <button className="login-button">
                             <Link to="/login">
-                            <span>LOGIN YOUR WALLET</span>
+                                <span>LOGIN YOUR WALLET</span>
                             </Link>
                         </button>
                     </div>
@@ -37,7 +37,7 @@ const ContactUs = () => {
                         </p>
                     </div>
                 </div>
-                <div className="w-1/3 bg-cover bg-center" style={{ backgroundImage: `url(${bgimg})` }}>
+                <div className="md:w-1/3 w-full bg-cover bg-center hidden md:block" style={{ backgroundImage: `url(${bgimg})` }}>
                 </div>
             </div>
         </>
