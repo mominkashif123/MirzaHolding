@@ -4,6 +4,7 @@ import loginAnimation from "../assets/login.json";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import AlertMessage from "../components/Customalert.jsx"; 
+import Navbar from "../components/Navbar.jsx";
 
 const LoginPage = () => {
     const animationContainer = useRef(null);
@@ -75,6 +76,8 @@ const LoginPage = () => {
     };
 
     return (
+        <>
+        <Navbar />
         <div className="h-screen flex flex-col md:flex-row">
             <div className="flex-1 bg-gray-200 flex flex-col items-center justify-center p-4 md:p-8">
                 <div ref={animationContainer} className="w-full h-full max-w-md"></div>
@@ -135,6 +138,7 @@ const LoginPage = () => {
                 </div>
             </div>
         </div>
+        </>
     );
 };
 
