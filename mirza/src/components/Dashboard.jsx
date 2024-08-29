@@ -14,7 +14,8 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/data?email=${encodeURIComponent(useremail)}`);
+                // const response = await axios.get(`http://localhost:5000/api/data?email=${encodeURIComponent(useremail)}`);
+                const response = await axios.get(`https://mirza-holding.onrender.com/api/data?email=${encodeURIComponent(useremail)}`);
                 setUserData(response.data);
                 setLoading(false);
             } catch (error) {

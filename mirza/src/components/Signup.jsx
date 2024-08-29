@@ -68,7 +68,8 @@ const SignupPage = () => {
         
         try {
             console.log("Sending OTP...", email, password);
-            const response = await axios.post("http://localhost:5000/api/sendOtp", {
+            // const response = await axios.post("http://localhost:5000/api/sendOtp", {
+            const response = await axios.post("https://mirza-holding.onrender.com/api/sendOtp", {
                 email,
                 password,
             });
@@ -91,7 +92,8 @@ const SignupPage = () => {
 
     const handleOtpSubmit = async () => {
         try {
-            const response = await axios.post("http://localhost:5000/api/verifyOtpAndCreateUser", {
+            // const response = await axios.post("http://localhost:5000/api/verifyOtpAndCreateUser", {
+            const response = await axios.post("https://mirza-holding.onrender.com/api/verifyOtpAndCreateUser", {
                 email,
                 otp,
             });
