@@ -76,9 +76,9 @@ const Navbar = () => {
                     <Link to='/corporate' className="block text-black hover:text-gray-600 py-2">Corporate</Link>
                     <Link to='/contact' className="block text-black hover:text-gray-600 py-2">Contact Us</Link>
                     <Link to='/finance' className="block text-black hover:text-gray-600 py-2">Financial Overview</Link>
-                    <button className="bg-black text-white py-2 px-4 rounded w-full mt-2">
+                    <Link to='/login' className="block bg-black text-white py-2 px-4 rounded w-full mt-2">
                         Login
-                    </button>
+                    </Link>
                 </div>
             )}
         </nav>
