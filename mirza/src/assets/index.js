@@ -1,0 +1,22 @@
+import bgimg from '../assets/bg.jpeg';
+import sign from '../assets/sign.png';
+import chairman from '../assets/chairman.jpg';
+import about from '../assets/about.jpg';
+import trading from '../assets/trading.png';
+import ballot from '../assets/ballot.png';
+import ce from '../assets/ce.jpg';
+import it from '../assets/it.png';
+import fc from '../assets/fc.png';
+import ap from '../assets/ap.png';
+import bnpl from '../assets/bnpl.png';
+import pd from '../assets/pd.png';
+import uw from '../assets/uw.png';
+import ma from '../assets/ma.png';
+import wcf from '../assets/wcf.png';
+import loc from '../assets/loc.png';
+import rd from '../assets/rd.png';
+import bc from '../assets/bc.png';
+import mb from '../assets/mb.png'; 
+import cms from '../assets/cms.png';
+
+export { bgimg, sign, chairman, about, trading, ballot, ce, it, fc, ap, bnpl, pd, uw, ma, wcf, loc, rd, bc, mb, cms };

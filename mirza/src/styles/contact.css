@@ -1,0 +1,39 @@
+/* ContactUs.css */
+.login-button {
+    position: relative;
+    overflow: hidden;
+    background-color: black;
+    color: white;
+    border: 2px solid black;
+    padding: 0.5rem 1.5rem; /* Adjust padding as needed */
+    font-size: 1rem; /* Adjust font size as needed */
+    border-radius: 0.5rem; /* Adjust border radius as needed */
+    cursor: pointer;
+    transition: color 0.3s, border-color 0.3s;
+}
+
+.login-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: white;
+    transition: left 0.3s ease;
+    z-index: 0;
+}
+
+.login-button:hover::before {
+    left: 0;
+}
+
+.login-button:hover {
+    color: black;
+    border-color: white;
+}
+
+.login-button span {
+    position: relative;
+    z-index: 1;
+}
