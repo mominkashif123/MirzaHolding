@@ -31,7 +31,7 @@ export const Signup = async (req, res) => {
         await User.create({ email, password, otp, isVerified: false });
 
         const mailOptions = {
-            from: 'momin.kashif81@gmail.com',
+            from: process.env.EMAIL,
             to: email,
             subject: 'Your OTP Code',
             text: `Your OTP code is ${otp}`,
@@ -40,7 +40,7 @@ export const Signup = async (req, res) => {
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 console.error('Error sending OTP email:', error);
-                return res.status(500).json({ error: 'Error sending OTP. Please try again.' });
+                return res.status(500).json({ error: 'Error sending OTP. in signup.' });
             }
             console.log('OTP email sent:', info.response);
             res.status(200).json({ message: 'OTP sent to your email.' });
@@ -71,7 +71,7 @@ export const sendOtp = async (req, res) => {
         await TemporaryUser.create({ email, password, otp });
 
         const mailOptions = { 
-            from: 'your-email@gmail.com',
+            from: process.env.EMAIL,
             to: email,
             subject: 'Your OTP Code',
             text: `Your OTP code is ${otp}`,
