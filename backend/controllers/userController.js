@@ -68,7 +68,12 @@ export const sendOtp = async (req, res) => {
         const otp = otpGenerator.generate(6, { upperCase: false, specialChars: false });
         console.log(otp);
 
-        await TemporaryUser.create({ email, password, otp });
+        try {
+            await TemporaryUser.create({ email, password, otp });
+        } catch (err) {
+            console.error('Error saving temporary user:', err);
+            return res.status(500).json({ error: 'Error saving temporary user.' });
+        }
 
         const mailOptions = { 
             from: process.env.EMAIL,
