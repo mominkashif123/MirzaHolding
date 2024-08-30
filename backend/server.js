@@ -23,7 +23,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // CORS configuration
-const allowedOrigins = ['https://mirza-holding.vercel.app'];
+const allowedOrigins = [
+  'https://mirza-holding.vercel.app',
+  'http://localhost:3000',  // Add localhost to allowed origins
+];
+
 app.use(cors({
   origin: (origin, callback) => {
     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
