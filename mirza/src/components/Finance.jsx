@@ -29,7 +29,7 @@ const FinancialOverview = () => {
             {/* Bottom Section with Information */}
             <div className="bg-gray-100 h-[50vh] flex items-center">
                 <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                    <div>
+                    <div className="mt-10 md:mt-0"> {/* Add margin-top on small screens */}
                         <h3 className="text-2xl font-bold mb-4">Investor Relations</h3>
                         <ul className="text-lg">
                             <li>
