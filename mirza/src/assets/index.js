@@ -21,5 +21,6 @@ import cms from '../assets/cms.png';
 import logo from '../assets/logo.png';
 import Q1 from '../assets/q1.pdf';
 import Q2 from '../assets/q2.pdf';
+import Q3 from '../assets/q3.pdf';
 
-export { bgimg, sign, chairman, about, trading, ballot, ce, it, fc, ap, bnpl, pd, uw, ma, wcf, loc, rd, bc, mb, cms, logo, Q1, Q2 };
+export { bgimg, sign, chairman, about, trading, ballot, ce, it, fc, ap, bnpl, pd, uw, ma, wcf, loc, rd, bc, mb, cms, logo, Q1, Q2, Q3 };

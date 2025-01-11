@@ -1,6 +1,6 @@
 import React from 'react';
 import Navbar from './Navbar.jsx';
-import { bgimg, Q1, Q2 } from '../assets/index.js';
+import { bgimg, Q1, Q2, Q3 } from '../assets/index.js';
 
 const FinancialOverview = () => {
     return (
@@ -13,15 +13,15 @@ const FinancialOverview = () => {
                 <div className="max-w-7xl mx-auto text-white grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
                     <div>
                         <h2 className="text-2xl font-bold">Assets under management</h2>
-                        <p className="text-4xl mt-2">460,000PKR</p>
+                        <p className="text-4xl mt-2">720,000PKR</p>
                     </div>
                     <div>
-                        <h2 className="text-2xl font-bold">Revenue for Q3 FY24</h2>
-                        <p className="text-4xl mt-2">124,000PKR</p>
+                        <h2 className="text-2xl font-bold">Revenue for Q4 FY24</h2>
+                        <p className="text-4xl mt-2">339,370PKR</p>
                     </div>
                     <div>
-                        <h2 className="text-2xl font-bold">Investor benchmark Q3</h2>
-                        <p className="text-4xl mt-2">25.5%</p>
+                        <h2 className="text-2xl font-bold">Investor benchmark Q4</h2>
+                        <p className="text-4xl mt-2">15.5%</p>
                     </div>
                 </div>
             </div>
@@ -42,7 +42,11 @@ const FinancialOverview = () => {
                                     • Q2 FY24 Report
                                 </a>
                             </li>
-                            <li>• Q3 FY24 Report</li>
+                            <li>
+                                <a href={Q3} download>
+                                    • Q3 FY24 Report
+                                </a>
+                            </li>
                         </ul>
                     </div>
                     <div>
