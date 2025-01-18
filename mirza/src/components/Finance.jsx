@@ -1,6 +1,6 @@
 import React from 'react';
 import Navbar from './Navbar.jsx';
-import { bgimg, Q1, Q2, Q3 } from '../assets/index.js';
+import { bgimg, Q1, Q2, Q3, Q4 } from '../assets/index.js';
 
 const FinancialOverview = () => {
     return (
@@ -45,6 +45,11 @@ const FinancialOverview = () => {
                             <li>
                                 <a href={Q3} download>
                                     • Q3 FY24 Report
+                                </a>
+                            </li>
+                            <li>
+                                <a href={Q4} download>
+                                    • Q4 FY24 Report
                                 </a>
                             </li>
                         </ul>
