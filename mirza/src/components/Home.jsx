@@ -1,13 +1,19 @@
-import Navbar from "./Navbar.jsx";
-import Header from "./Header.jsx";
-import ChairmanMessage from "./Chairman.jsx";
+
+import Navbar from "./Navbar";
+import Header from "./Header";
+import PSXLivePrices from "./PSX";
+import ChairmanMessage from "./Chairman";
 
 const Home = () => {
     return (
-        <div>
+        <div className="min-h-screen bg-gray-100">
             <Navbar />
-            <Header />
-            <ChairmanMessage />
+            {/* Wrapper with top padding equal to navbar height */}
+            <div className="pt-[10vh]">
+                <PSXLivePrices />
+                <Header />
+                <ChairmanMessage />
+            </div>
         </div>
     );
 };

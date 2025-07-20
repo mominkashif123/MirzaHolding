@@ -113,7 +113,6 @@ export const verifyOtpAndCreateUser = async (req, res) => {
     }
 };
 
-
 export const Login = async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -150,9 +149,43 @@ export const UserData = async (req, res) => {
             : user.amount;
 
         const transactions = user.transactions.map(transaction => transaction);
-        res.json({ amount, transactions });
+        res.json({ amount, transactions, premium: user.premium });
     } catch (error) {
         console.error("Error fetching user data:", error);
         res.status(500).json({ message: 'Error fetching user data' });
+    }
+}
+
+export const ChangePassword = async (req, res) => {
+    const { email, currentPassword, newPassword } = req.body;
+    if (!email || !currentPassword || !newPassword) {
+        return res.status(400).json({ error: 'Email, old password, and new password are required.' });
+    }
+
+    const passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
+    if (!passwordRegex.test(newPassword)) {
+        return res.status(400).json({
+            error: 'Password must be at least 8 characters long and include at least one special character.'
+        });
+    }
+    
+    try {
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found.' });
+        }
+
+        if (user.password !== currentPassword) {
+            return res.status(400).json({ error: 'Old password is incorrect.' });
+        }
+
+        user.password = newPassword;
+        await user.save();
+
+        res.status(200).json({ message: 'Password changed successfully.' });
+    } catch (error) {
+        console.error('Error changing password:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 }

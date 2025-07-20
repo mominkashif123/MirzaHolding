@@ -1,11 +1,13 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { logo } from '../assets/index.js';
+import { Menu, X, TrendingUp } from 'lucide-react';
 
 const Navbar = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
     const [lastScrollTop, setLastScrollTop] = useState(0);
+    const [isScrolled, setIsScrolled] = useState(false);
 
     const toggleMobileMenu = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -14,13 +16,16 @@ const Navbar = () => {
     useEffect(() => {
         const handleScroll = () => {
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            if (scrollTop > lastScrollTop) {
-                // Scrolling down
+            
+            // Show/hide navbar based on scroll direction
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
                 setIsVisible(false);
             } else {
-                // Scrolling up
                 setIsVisible(true);
             }
+            
+            // Add background blur when scrolled
+            setIsScrolled(scrollTop > 50);
             setLastScrollTop(scrollTop);
         };
 
@@ -28,59 +33,125 @@ const Navbar = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, [lastScrollTop]);
 
+    // Close mobile menu when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (isMobileMenuOpen && !event.target.closest('nav')) {
+                setIsMobileMenuOpen(false);
+            }
+        };
+
+        document.addEventListener('click', handleClickOutside);
+        return () => document.removeEventListener('click', handleClickOutside);
+    }, [isMobileMenuOpen]);
+
+    const navLinks = [
+        { to: '/', label: 'Home' },
+        { to: '/about', label: 'About Us' },
+        { to: '/retail', label: 'Retail' },
+        { to: '/private', label: 'Private' },
+        { to: '/corporate', label: 'Corporate' },
+        { to: '/contact', label: 'Contact Us' },
+        { to: '/finance', label: 'Financial Overview' }
+    ];
+
     return (
         <nav
-            className={`bg-gray-300 h-[10vh] p-4 z-50 fixed top-0 w-full transition-all duration-300 
-            ${isVisible ? 'opacity-100' : 'opacity-0 invisible'}`}>
-            <div className="flex justify-between items-center h-full">
-                {/* Logo */}
-                <div className="flex items-center space-x-4 ml-4">
-                    <img src={logo} alt="Mirza Holding" style={{ height: '150px' }} />
-                    <span className="text-black font-bold text-xl hidden md:block">Mirza Holding</span>
-                </div>
-
-                {/* Links */}
-                <div className="hidden md:flex space-x-6 items-center">
-                    <Link to='/' className="text-black hover:text-gray-600">Home</Link>
-                    <Link to='/about' className="text-black hover:text-gray-600">About Us</Link>
-                    <Link to='/private' className="text-black hover:text-gray-600">Private</Link>
-                    <Link to='/corporate' className="text-black hover:text-gray-600">Corporate</Link>
-                    <Link to="/contact" className="text-black hover:text-gray-600">Contact Us</Link>
-                    <Link to="/finance" className="text-black hover:text-gray-600">Financial Overview</Link>
-
-                    {/* Login Button */}
-                    <Link to="/login" className="bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black">
-                        Login
+            className={`fixed top-0 w-full z-50 transition-all duration-500 ease-in-out h-[10vh]
+            ${isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}
+            ${isScrolled 
+                ? 'bg-black/98 backdrop-blur-xl shadow-2xl border-b border-gray-700' 
+                : 'bg-black/95 backdrop-blur-lg shadow-2xl border-b border-gray-800'
+            }`}
+        >
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+                <div className="flex justify-between items-center h-full">
+                    {/* Logo */}
+                    <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group">
+                        <div className="relative">
+                            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-gray-600 to-black rounded-xl flex items-center justify-center transform group-hover:scale-110 transition-all duration-300 shadow-lg">
+                                <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                            </div>
+                            <div className="absolute inset-0 bg-gradient-to-br from-gray-600 to-black rounded-xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity duration-300"></div>
+                        </div>
+                        <div className="hidden sm:block">
+                            <span className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+                                Mirza <span className="text-gray-300">Holding</span>
+                            </span>
+                        </div>
                     </Link>
-                </div>
 
-                {/* Hamburger Icon */}
-                <div className="md:hidden mr-4">
+                    {/* Desktop Navigation */}
+                    <div className="hidden lg:flex items-center space-x-1">
+                        {navLinks.map((link, index) => (
+                            <Link
+                                key={link.to}
+                                to={link.to}
+                                className="relative px-3 xl:px-4 py-2 text-gray-300 hover:text-white transition-all duration-300 group rounded-lg hover:bg-white/5 text-sm xl:text-base"
+                                style={{ animationDelay: `${index * 0.1}s` }}
+                            >
+                                <span className="relative z-10 font-medium">{link.label}</span>
+                                <div className="absolute inset-0 bg-gray-700/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></div>
+                            </Link>
+                        ))}
+                        
+                        {/* Login Button */}
+                        <Link
+                            to="/login"
+                            className="ml-4 px-4 xl:px-6 py-2 xl:py-2.5 bg-white text-black font-semibold rounded-xl hover:bg-gray-200 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl text-sm xl:text-base"
+                        >
+                            Login
+                        </Link>
+                    </div>
+
+                    {/* Mobile Menu Button */}
                     <button
                         onClick={toggleMobileMenu}
-                        className="text-black focus:outline-none"
+                        className="lg:hidden p-2 rounded-lg text-white hover:bg-white/10 transition-colors duration-200 z-50"
+                        aria-label="Toggle mobile menu"
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
+                        {isMobileMenuOpen ? (
+                            <X className="w-6 h-6" />
+                        ) : (
+                            <Menu className="w-6 h-6" />
+                        )}
                     </button>
                 </div>
             </div>
 
-            {/* Mobile Menu */}
+            {/* Mobile Menu Overlay */}
             {isMobileMenuOpen && (
-                <div className="md:hidden bg-white text-center p-4">
-                    <Link to='/' className="block text-black hover:text-gray-600 py-2">Home</Link>
-                    <Link to='/about' className="block text-black hover:text-gray-600 py-2">About Us</Link>
-                    <Link to='/private' className="block text-black hover:text-gray-600 py-2">Private</Link>
-                    <Link to='/corporate' className="block text-black hover:text-gray-600 py-2">Corporate</Link>
-                    <Link to='/contact' className="block text-black hover:text-gray-600 py-2">Contact Us</Link>
-                    <Link to='/finance' className="block text-black hover:text-gray-600 py-2">Financial Overview</Link>
-                    <Link to='/login' className="block bg-black text-white py-2 px-4 rounded w-full mt-2">
+                <div className="lg:hidden fixed inset-0 bg-black/50 z-40" onClick={() => setIsMobileMenuOpen(false)} />
+            )}
+
+            {/* Mobile Menu */}
+            <div
+                className={`lg:hidden fixed top-[10vh] right-0 w-full sm:w-80 h-[calc(100vh-10vh)] bg-black/95 backdrop-blur-lg border-l border-gray-700 transform transition-transform duration-300 ease-in-out z-50
+                ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
+            >
+                <div className="px-4 py-6 space-y-3 h-full overflow-y-auto">
+                    {navLinks.map((link, index) => (
+                        <Link
+                            key={link.to}
+                            to={link.to}
+                            className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all duration-200 transform hover:translate-x-2"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            style={{ animationDelay: `${index * 0.05}s` }}
+                        >
+                            {link.label}
+                        </Link>
+                    ))}
+                    
+                    <Link
+                        to="/login"
+                        className="block mx-4 mt-6 px-6 py-3 bg-white text-black font-semibold rounded-xl text-center hover:bg-gray-200 transform hover:scale-105 transition-all duration-300"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                    >
                         Login
                     </Link>
                 </div>
-            )}
+            </div>
         </nav>
     );
 };

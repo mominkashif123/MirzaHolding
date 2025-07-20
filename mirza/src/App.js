@@ -12,6 +12,8 @@ import Dashboard from './components/Dashboard.jsx';
 import AdminLogin from './components/Adminlogin.jsx';
 import AdminDashboard from './components/Admindashboard.jsx';
 import FinancialOverview from './components/Finance.jsx';
+import RetailServices from './components/Retail.jsx';
+import NotFound from './components/NotFound.jsx';
 
 const App = () => {
     return (
@@ -21,6 +23,7 @@ const App = () => {
                 <Route path="/about" element={<AboutSection />} />
                 <Route path="/private" element={<PrivateServices />} />
                 <Route path="/corporate" element={<CorpServices />} />
+                <Route path="/retail" element={<RetailServices />} />
                 <Route path="/contact" element={<ContactUs />} />
                 <Route path="/finance" element={<FinancialOverview />} />
                 <Route path="/login" element={<LoginPage />} />
@@ -36,6 +39,7 @@ const App = () => {
                         <AdminDashboard />
                     </ProtectedRoute>
                 } />
+                <Route path="*" element={<NotFound />} />
             </Routes>
         </Router>
     );

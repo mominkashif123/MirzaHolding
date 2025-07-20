@@ -43,6 +43,34 @@ app.use(cors({
 app.use("/api", userRoutes);
 app.use("/api", adminRoutes);
 
+// app.get("/api/psx", async (req, res) => {
+//   const symbols = ['KSE100', 'KEL', 'PSO', 'OGDC', 'KSE30']; // Add your desired stock symbols here
+//   const results = {};
+
+//   await Promise.all(
+//     symbols.map(async (symbol) => {
+//       try {
+//         const response = await fetch(`https://dps.psx.com.pk/timeseries/int/${symbol}`);
+//         const data = await response.json();
+
+//         if (data.status === 1 && data.data?.length > 0) {
+//           const latest = data.data[data.data.length - 1];
+//           results[symbol] = {
+//             price: latest[1],
+//             time: new Date(latest[0] * 1000).toLocaleString(),
+//           };
+//         } else {
+//           results[symbol] = null;
+//         }
+//       } catch (error) {
+//         results[symbol] = null;
+//       }
+//     })
+//   );
+
+//   res.json(results);
+// });
+
 // Define the port and start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
