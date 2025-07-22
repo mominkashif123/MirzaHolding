@@ -28,8 +28,7 @@ const PSXLivePrices = () => {
 
   useEffect(() => {
     fetchStocks();
-    const interval = setInterval(fetchStocks, 60000);
-    return () => clearInterval(interval);
+    // Removed setInterval to only fetch once on mount
   }, []);
 
   if (isLoading) {
