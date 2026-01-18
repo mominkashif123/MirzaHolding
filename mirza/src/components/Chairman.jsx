@@ -46,7 +46,7 @@ const ChairmanMessage = () => {
 
                 <div className="grid lg:grid-cols-2 gap-16 items-center">
                     {/* Left side - Chairman Image */}
-                    <div className="relative transition-all duration-1000 delay-300 ${isInView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}">
+                    <div className={`relative transition-all duration-1000 delay-300 ${isInView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
                         <div className="relative">
                             {/* Chairman image added here */}
                             <div className="w-full max-w-md mx-auto aspect-[3/4] rounded-3xl relative overflow-hidden shadow-2xl">

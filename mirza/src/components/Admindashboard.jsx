@@ -87,8 +87,8 @@ const AdminDashboard = () => {
                 const fileSizeMB = (uploadForm.pdfFile.size / (1024 * 1024)).toFixed(2);
 
                 try {
-                    const response = await axios.post('http://localhost:5000/api/quarterreports', {
-                    // const response = await axios.post('https://mirza-holding.onrender.com/api/quarterreports', {
+                    await axios.post('http://localhost:5000/api/quarterreports', {
+                    // await axios.post('https://mirza-holding.onrender.com/api/quarterreports', {
                         quarter: uploadForm.quarter,
                         year: uploadForm.year,
                         title: uploadForm.title,
