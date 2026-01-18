@@ -1,6 +1,7 @@
 import express from "express";
 import userRoutes from './routes/userRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
+import quarterReportRoutes from './routes/quarterReportRoutes.js';
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -19,8 +20,9 @@ mongoose.connect(process.env.MONGO_URI)
 const app = express();
 
 // Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Increase payload size limit for PDF uploads (50MB)
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // CORS configuration
 const allowedOrigins = [
@@ -42,6 +44,7 @@ app.use(cors({
 // Routes
 app.use("/api", userRoutes);
 app.use("/api", adminRoutes);
+app.use("/api", quarterReportRoutes);
 
 app.get("/api/psx", async (req, res) => {
   const symbols = ['KSE100', 'KEL', 'PSO', 'OGDC', 'KSE30']; 
@@ -67,7 +70,7 @@ app.get("/api/psx", async (req, res) => {
       }
     })
   );
-
+  console.log(results); 
   res.json(results);
 });
 

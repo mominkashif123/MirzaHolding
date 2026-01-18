@@ -1,11 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Navbar from '../components/Navbar';
 import { TrendingUp, FileText, Users, BarChart3, DollarSign, PieChart, Download } from 'lucide-react';
 
 const FinancialOverview = () => {
     const [isInView, setIsInView] = useState(false);
     const [ref, setRef] = useState(null);
+    const [reports, setReports] = useState([]);
+    const [loadingReports, setLoadingReports] = useState(true);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -27,6 +30,51 @@ const FinancialOverview = () => {
             }
         };
     }, [ref]);
+
+    // Fetch quarter reports from API
+    useEffect(() => {
+        const fetchQuarterReports = async () => {
+            try {
+                // const response = await axios.get('http://localhost:5000/api/quarterreports');
+                const response = await axios.get('https://mirza-holding.onrender.com/api/quarterreports');
+                setReports(response.data);
+                setLoadingReports(false);
+            } catch (error) {
+                console.error('Error fetching quarter reports:', error);
+                setLoadingReports(false);
+            }
+        };
+
+        fetchQuarterReports();
+    }, []);
+
+    // Handle PDF download
+    const handleDownloadPDF = async (quarter) => {
+        try {
+            // const response = await axios.get(`http://localhost:5000/api/quarterreports/${quarter}`, {
+            const response = await axios.get(`https://mirza-holding.onrender.com/api/quarterreports/${quarter}`, {
+                responseType: 'blob'
+            });
+            
+            // Create blob URL and trigger download
+            const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+            const link = document.createElement('a');
+            link.href = url;
+            
+            // Find the report to get proper filename
+            const report = reports.find(r => r.quarter === quarter);
+            const filename = report ? `${report.quarter}_FY${report.year}.pdf` : `${quarter}_Report.pdf`;
+            
+            link.setAttribute('download', filename);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Error downloading PDF:', error);
+            alert('Failed to download PDF. Please try again.');
+        }
+    };
 
     const stats = [
         { 
@@ -50,13 +98,6 @@ const FinancialOverview = () => {
             growth: "+2.1%",
             description: "Performance benchmark"
         }
-    ];
-
-    const reports = [
-        { title: "Q1 FY24 Report", date: "Jan 2024", size: "2.4 MB" },
-        { title: "Q2 FY24 Report", date: "Apr 2024", size: "2.8 MB" },
-        { title: "Q3 FY24 Report", date: "Jul 2024", size: "3.1 MB" },
-        { title: "Q4 FY24 Report", date: "Oct 2024", size: "3.5 MB" }
     ];
 
     const pressReleases = [
@@ -183,25 +224,31 @@ const FinancialOverview = () => {
                             </div>
                             
                             <div className="space-y-4">
-                                {reports.map((report, index) => (
-                                    <div 
-                                        key={index}
-                                        className="group bg-white/70 backdrop-blur-lg rounded-xl p-4 hover:bg-white/90 transition-all duration-300 hover-lift border border-gray-200/50 cursor-pointer"
-                                    >
-                                        <div className="flex items-center justify-between">
-                                            <div className="flex-1">
-                                                <h4 className="font-semibold text-black group-hover:text-gray-800 transition-colors">
-                                                    {report.title}
-                                                </h4>
-                                                <div className="flex items-center space-x-4 text-sm text-gray-600 mt-1">
-                                                    <span>{report.date}</span>
-                                                    <span>{report.size}</span>
+                                {loadingReports ? (
+                                    <div className="text-center py-8 text-gray-600">Loading reports...</div>
+                                ) : reports.length === 0 ? (
+                                    <div className="text-center py-8 text-gray-600">No reports available</div>
+                                ) : (
+                                    reports.map((report) => (
+                                        <div 
+                                            key={report.quarter}
+                                            onClick={() => handleDownloadPDF(report.quarter)}
+                                            className="group bg-white/70 backdrop-blur-lg rounded-xl p-4 hover:bg-white/90 transition-all duration-300 hover-lift border border-gray-200/50 cursor-pointer"
+                                        >
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex-1">
+                                                    <h4 className="font-semibold text-black group-hover:text-gray-800 transition-colors">
+                                                        {report.title}
+                                                    </h4>
+                                                    <div className="flex items-center space-x-4 text-sm text-gray-600 mt-1">
+                                                        {report.size && <span>{report.size}</span>}
+                                                    </div>
                                                 </div>
+                                                <Download className="w-5 h-5 text-gray-600 group-hover:text-black transition-colors" />
                                             </div>
-                                            <Download className="w-5 h-5 text-gray-600 group-hover:text-black transition-colors" />
                                         </div>
-                                    </div>
-                                ))}
+                                    ))
+                                )}
                             </div>
                         </div>
 

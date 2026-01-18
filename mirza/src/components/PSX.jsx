@@ -11,6 +11,7 @@ const PSXLivePrices = () => {
       const res = await fetch('https://mirza-holding.onrender.com/api/psx');
       const data = await res.json();
       setStocks(data);
+      console.log(data);
       setIsLoading(false);
     } catch (err) {
       console.error(err);
