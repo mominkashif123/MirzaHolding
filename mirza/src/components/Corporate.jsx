@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import { Building2, TrendingUp, CreditCard, Users, Search, Calculator, Briefcase, Vault, ChevronRight, Star } from "lucide-react";
+import { Building2, TrendingUp, CreditCard, Search, Calculator, Vault } from "lucide-react";
 
 const ServiceCard = ({ name, description, icon: IconComponent, index }) => {
     const [isInView, setIsInView] = useState(false);

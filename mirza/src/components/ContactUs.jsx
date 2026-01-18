@@ -1,4 +1,4 @@
-import { Phone, Mail, MapPin, Clock, Send, ExternalLink } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Send } from 'lucide-react';
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { Link } from 'react-router-dom';

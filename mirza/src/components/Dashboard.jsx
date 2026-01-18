@@ -3,8 +3,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {
     DollarSign, TrendingUp, Activity, LogOut, User, Wallet, BarChart3,
-    CreditCard, PieChart, Target, Globe, Calendar, Clock,
-    ArrowUpRight, ArrowDownRight, Plus, Filter, Download, Bell, Settings, X, AlertCircle, CheckCircle
+    Calendar,
+    ArrowUpRight, ArrowDownRight, Filter, Download, Bell, Settings, X, AlertCircle, CheckCircle
 } from "lucide-react";
 import jsPDF from 'jspdf';
 import Newsletters from '../components/Newsletters';
@@ -13,7 +13,6 @@ const Dashboard = () => {
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [showAlert, setShowAlert] = useState(false);
     const [activeTab, setActiveTab] = useState('overview');
     const [showSettingsModal, setShowSettingsModal] = useState(false);
     const [passwordLoading, setPasswordLoading] = useState(false);
@@ -75,7 +74,6 @@ const Dashboard = () => {
     }, [useremail]);
 
     const handleLogout = () => {
-        setShowAlert(true);
         showToast('success', 'Logging out...');
         setTimeout(() => {
             sessionStorage.removeItem("user");
