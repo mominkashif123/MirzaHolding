@@ -1,6 +1,6 @@
 import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
-import { Home, ArrowLeft, Search, AlertCircle } from "lucide-react";
+import { Home, ArrowLeft, AlertCircle } from "lucide-react";
 
 const NotFound = () => {
   const location = useLocation();

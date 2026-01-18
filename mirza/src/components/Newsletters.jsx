@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Bell, Calendar, Download, Eye, ExternalLink, Clock, Search, Filter } from 'lucide-react';
+import { Bell, Calendar, Download, Eye, Clock, Search, Filter } from 'lucide-react';
 
 const Newsletters = () => {
     const [newsletters, setNewsletters] = useState([]);

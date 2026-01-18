@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import { Wallet, TrendingUp, PiggyBank, DollarSign, ChevronRight, Star } from "lucide-react";
+import { Wallet, TrendingUp, PiggyBank, DollarSign } from "lucide-react";
 
 const ServiceCard = ({ name, description, icon: IconComponent, index }) => {
     const [isInView, setIsInView] = useState(false);
