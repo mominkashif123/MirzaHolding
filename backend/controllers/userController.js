@@ -1,23 +1,14 @@
 import User from '../models/User.js';
 import mongoose from 'mongoose';
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import otpGenerator from 'otp-generator';
 import TemporaryUser from '../models/Temp.js'; 
 import dotenv from 'dotenv';
 
-dotenv.config(); // ensure env vars loaded before transporter init
+dotenv.config();
 
-const smtpPort = Number(process.env.SMTP_PORT) || 465;
-const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp.gmail.com',
-    port: smtpPort,
-    secure: process.env.SMTP_SECURE ? process.env.SMTP_SECURE === 'true' : smtpPort === 465,
-    auth: {
-        user: process.env.EMAIL,
-        pass: process.env.PASSKEY,
-    },
-    connectionTimeout: 15000,
-});
+// Initialize Resend - works on Render and locally
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const Signup = async (req, res) => {
     const { email, password } = req.body;
@@ -36,21 +27,20 @@ export const Signup = async (req, res) => {
 
         await User.create({ email, password, otp, isVerified: false });
 
-        const mailOptions = {
-            from: process.env.EMAIL,
+        const { data, error: emailError } = await resend.emails.send({
+            from: process.env.EMAIL_FROM || `noreply@${process.env.RESEND_DOMAIN || 'onboarding.resend.dev'}`,
             to: email,
             subject: 'Your OTP Code',
             text: `Your OTP code is ${otp}`,
-        };
-
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.error('Error sending OTP email:', error);
-                return res.status(500).json({ error: 'Error sending OTP. in signup.' });
-            }
-            console.log('OTP email sent:', info.response);
-            res.status(200).json({ message: 'OTP sent to your email.' });
         });
+
+        if (emailError) {
+            console.error('Error sending OTP email:', emailError);
+            return res.status(500).json({ error: 'Error sending OTP. in signup.' });
+        }
+        
+        console.log('OTP email sent:', data?.id);
+        res.status(200).json({ message: 'OTP sent to your email.' });
 
     } catch (error) {
         console.error('Error creating user:', error);
@@ -81,14 +71,19 @@ export const sendOtp = async (req, res) => {
             return res.status(500).json({ error: 'Error saving temporary user.' });
         }
 
-        const mailOptions = { 
-            from: process.env.EMAIL,
+        const { data, error: emailError } = await resend.emails.send({
+            from: process.env.EMAIL_FROM || `noreply@${process.env.RESEND_DOMAIN || 'onboarding.resend.dev'}`,
             to: email,
             subject: 'Your OTP Code',
             text: `Your OTP code is ${otp}`,
-        };
+        });
 
-        await transporter.sendMail(mailOptions);
+        if (emailError) {
+            console.error('Error sending OTP email:', emailError);
+            return res.status(500).json({ error: 'Error sending OTP.' });
+        }
+        
+        console.log('OTP email sent:', data?.id);
         res.status(200).json({ message: 'OTP sent to your email!' });
     } catch (error) {
         console.error('Error sending OTP:', error);
