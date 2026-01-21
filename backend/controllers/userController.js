@@ -5,12 +5,18 @@ import otpGenerator from 'otp-generator';
 import TemporaryUser from '../models/Temp.js'; 
 import dotenv from 'dotenv';
 
+dotenv.config(); // ensure env vars loaded before transporter init
+
+const smtpPort = Number(process.env.SMTP_PORT) || 465;
 const transporter = nodemailer.createTransport({
-    service: 'Gmail',
+    host: process.env.SMTP_HOST || 'smtp.gmail.com',
+    port: smtpPort,
+    secure: process.env.SMTP_SECURE ? process.env.SMTP_SECURE === 'true' : smtpPort === 465,
     auth: {
         user: process.env.EMAIL,
         pass: process.env.PASSKEY,
     },
+    connectionTimeout: 15000,
 });
 
 export const Signup = async (req, res) => {
