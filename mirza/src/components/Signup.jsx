@@ -8,9 +8,7 @@ import { Mail, Lock, Eye, EyeOff, ArrowRight, UserPlus, Shield } from "lucide-re
 const SignupPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [otp, setOtp] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-    const [showOtpPopup, setShowOtpPopup] = useState(false);
     const [alert, setAlert] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
@@ -28,46 +26,24 @@ const SignupPage = () => {
         }
         
         try {
-            console.log("Sending OTP...", email, password);
-            const response = await axios.post("https://mirza-holding.onrender.com/api/sendOtp", {
+            // const response = await axios.post("https://mirza-holding.onrender.com/api/signup", {
+            const response = await axios.post("http://localhost:5000/api/signup", {
                 email,
                 password,
-            });
-            if (response.status === 200) {
-                setShowOtpPopup(true);
-                setAlert({ type: "success", message: "OTP sent to your email!" });
-            }
-            else {
-                setAlert({ type: "error", message: "Signup failed. Please try again." });
-            }
-        } catch (error) {
-            console.error("Error sending OTP:", error);
-            if (error.response.status === 400 && error.response.data.error === "User already exists.") {
-                setAlert({ type: "error", message: "User already exists." });
-            } else {
-                setAlert({ type: "error", message: "Signup failed. Please try again." });
-            }
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    const handleOtpSubmit = async () => {
-        setIsLoading(true);
-        try {
-            const response = await axios.post("https://mirza-holding.onrender.com/api/verifyOtpAndCreateUser", {
-                email,
-                otp,
             });
             if (response.status === 200) {
                 setAlert({ type: "success", message: "Signup successful!" });
                 setTimeout(() => navigate("/login"), 2000);
             } else {
-                setAlert({ type: "error", message: "OTP verification failed. Please try again." });
+                setAlert({ type: "error", message: "Signup failed. Please try again." });
             }
         } catch (error) {
-            console.error("Error verifying OTP:", error);
-            setAlert({ type: "error", message: "OTP verification failed. Please try again." });
+            console.error("Error signing up:", error);
+            if (error.response?.status === 400 && error.response?.data?.error === "User already exists.") {
+                setAlert({ type: "error", message: "User already exists." });
+            } else {
+                setAlert({ type: "error", message: "Signup failed. Please try again." });
+            }
         } finally {
             setIsLoading(false);
         }
@@ -253,49 +229,6 @@ const SignupPage = () => {
                 </div>
             </div>
 
-            {/* OTP Verification Popup */}
-            {showOtpPopup && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50">
-                    <div className="bg-white/90 backdrop-blur-lg p-8 rounded-2xl shadow-2xl max-w-md w-full mx-4 border border-gray-200/50">
-                        <div className="text-center mb-6">
-                            <div className="w-16 h-16 bg-gradient-to-br from-black to-gray-700 rounded-full mx-auto mb-4 flex items-center justify-center">
-                                <Shield className="w-8 h-8 text-white" />
-                            </div>
-                            <h2 className="text-2xl font-bold mb-2 text-black font-playfair">Verify Your Email</h2>
-                            <p className="text-gray-600">Enter the OTP sent to your email address</p>
-                        </div>
-                        
-                        <div className="space-y-4">
-                            <input
-                                type="text"
-                                value={otp}
-                                onChange={(e) => setOtp(e.target.value)}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent text-center text-lg tracking-widest"
-                                placeholder="Enter OTP"
-                                maxLength="6"
-                            />
-                            
-                            <button
-                                onClick={handleOtpSubmit}
-                                disabled={isLoading}
-                                className="w-full bg-gradient-to-r from-black to-gray-800 text-white py-3 px-6 rounded-xl font-semibold hover:from-gray-800 hover:to-black transform hover:scale-105 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
-                            >
-                                {isLoading ? (
-                                    <>
-                                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                                        <span>Verifying...</span>
-                                    </>
-                                ) : (
-                                    <>
-                                        <span>Verify OTP</span>
-                                        <ArrowRight className="w-4 h-4" />
-                                    </>
-                                )}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };

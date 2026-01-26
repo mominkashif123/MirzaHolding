@@ -1,14 +1,5 @@
 import User from '../models/User.js';
 import mongoose from 'mongoose';
-import { Resend } from 'resend';
-import otpGenerator from 'otp-generator';
-import TemporaryUser from '../models/Temp.js'; 
-import dotenv from 'dotenv';
-
-dotenv.config();
-
-// Initialize Resend - works on Render and locally
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const Signup = async (req, res) => {
     const { email, password } = req.body;
@@ -23,94 +14,13 @@ export const Signup = async (req, res) => {
             return res.status(400).json({ error: 'User already exists.' });
         }
 
-        const otp = otpGenerator.generate(6, { upperCase: false, specialChars: false });
+        await User.create({ email, password });
 
-        await User.create({ email, password, otp, isVerified: false });
-
-        const { data, error: emailError } = await resend.emails.send({
-            from: process.env.EMAIL_FROM || `noreply@${process.env.RESEND_DOMAIN || 'onboarding.resend.dev'}`,
-            to: email,
-            subject: 'Your OTP Code',
-            text: `Your OTP code is ${otp}`,
-        });
-
-        if (emailError) {
-            console.error('Error sending OTP email:', emailError);
-            return res.status(500).json({ error: 'Error sending OTP. in signup.' });
-        }
-        
-        console.log('OTP email sent:', data?.id);
-        res.status(200).json({ message: 'OTP sent to your email.' });
+        res.status(200).json({ message: 'User created successfully!' });
 
     } catch (error) {
         console.error('Error creating user:', error);
         res.status(500).json({ error: 'Internal server error' });
-    }
-};
-
-export const sendOtp = async (req, res) => {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-        return res.status(400).json({ error: 'Email and password are required.' });
-    }
-
-    try {
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ error: 'User already exists.' });
-        }
-
-        const otp = otpGenerator.generate(6, { upperCase: false, specialChars: false });
-        console.log(otp);
-
-        try {
-            await TemporaryUser.create({ email, password, otp });
-        } catch (err) {
-            console.error('Error saving temporary user:', err);
-            return res.status(500).json({ error: 'Error saving temporary user.' });
-        }
-
-        const { data, error: emailError } = await resend.emails.send({
-            from: process.env.EMAIL_FROM || `noreply@${process.env.RESEND_DOMAIN || 'onboarding.resend.dev'}`,
-            to: email,
-            subject: 'Your OTP Code',
-            text: `Your OTP code is ${otp}`,
-        });
-
-        if (emailError) {
-            console.error('Error sending OTP email:', emailError);
-            return res.status(500).json({ error: 'Error sending OTP.' });
-        }
-        
-        console.log('OTP email sent:', data?.id);
-        res.status(200).json({ message: 'OTP sent to your email!' });
-    } catch (error) {
-        console.error('Error sending OTP:', error);
-        res.status(500).json({ error: 'Error sending OTP.' });
-    }
-};
-
-export const verifyOtpAndCreateUser = async (req, res) => {
-    const { email, otp } = req.body;
-
-    if (!email || !otp) {
-        return res.status(400).json({ error: 'Email and OTP are required.' });
-    }
-
-    try {
-        const tempUser = await TemporaryUser.findOne({ email, otp });
-        if (!tempUser) {
-            return res.status(400).json({ error: 'Invalid OTP.' });
-        }
-
-        await User.create({ email, password: tempUser.password });
-        await TemporaryUser.deleteOne({ email });
-
-        res.status(200).json({ message: 'User created successfully!' });
-    } catch (error) {
-        console.error('Error verifying OTP:', error);
-        res.status(500).json({ error: 'Error verifying OTP.' });
     }
 };
 
