@@ -104,7 +104,6 @@ const AdminDashboard = () => {
                         setUploadSuccess('');
                     }, 2000);
                 } catch (error) {
-                    console.error('Upload error:', error);
                     setUploadError(error.response?.data?.error || 'Failed to upload report. Please try again.');
                 } finally {
                     setUploadLoading(false);
@@ -116,7 +115,6 @@ const AdminDashboard = () => {
                 setUploadLoading(false);
             };
         } catch (error) {
-            console.error('File processing error:', error);
             setUploadError('Error processing file. Please try again.');
             setUploadLoading(false);
         }

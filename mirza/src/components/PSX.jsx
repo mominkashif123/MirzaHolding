@@ -11,10 +11,8 @@ const PSXLivePrices = () => {
       const res = await fetch('https://mirza-holding.onrender.com/api/psx');
       const data = await res.json();
       setStocks(data);
-      console.log(data);
       setIsLoading(false);
     } catch (err) {
-      console.error(err);
       // Fallback data for demo purposes
       setStocks({
         KSE100: { price: 45234.56, priceChange: 234.56 },

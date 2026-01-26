@@ -49,9 +49,7 @@ const Dashboard = () => {
                 // const response = await axios.get(`http://localhost:5000/api/data?email=${encodeURIComponent(useremail)}`);
                 setUserData(response.data);
                 setLoading(false);
-                console.log('User data fetched successfully:', response.data);
             } catch (error) {
-                console.error('Error fetching user data:', error);
                 let errorMessage = "Error fetching user data.";
 
                 if (error.response) {
@@ -128,7 +126,6 @@ const Dashboard = () => {
             }, 2000);
 
         } catch (error) {
-            console.error('Password change error:', error);
             let errorMessage = "Error changing password. Please try again.";
 
             if (error.response) {

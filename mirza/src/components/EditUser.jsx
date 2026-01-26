@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const EditUserModal = ({ user, onClose, onUpdate }) => {
-    console.log(user.email);
     const [amount, setAmount] = useState(user.amount);
     const [transactions, setTransactions] = useState(user.transactions.join('\n')); // Convert array to string for editing
 
@@ -18,7 +17,7 @@ const EditUserModal = ({ user, onClose, onUpdate }) => {
             });
             onUpdate(response.data);
         } catch (error) {
-            console.error("Error updating user:", error);
+            // Error updating user
         }
     };
 

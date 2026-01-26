@@ -19,7 +19,6 @@ export const Signup = async (req, res) => {
         res.status(200).json({ message: 'User created successfully!' });
 
     } catch (error) {
-        console.error('Error creating user:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 };
@@ -36,7 +35,6 @@ export const Login = async (req, res) => {
         }
         res.status(200).json({ msg: "User logged in" });
     } catch (err) {
-        console.error(err);
         res.status(500).send("Error logging in User");
     }
 };
@@ -62,7 +60,6 @@ export const UserData = async (req, res) => {
         const transactions = user.transactions.map(transaction => transaction);
         res.json({ amount, transactions, premium: user.premium });
     } catch (error) {
-        console.error("Error fetching user data:", error);
         res.status(500).json({ message: 'Error fetching user data' });
     }
 }
@@ -96,7 +93,6 @@ export const ChangePassword = async (req, res) => {
 
         res.status(200).json({ message: 'Password changed successfully.' });
     } catch (error) {
-        console.error('Error changing password:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 }

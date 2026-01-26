@@ -40,7 +40,6 @@ const FinancialOverview = () => {
                 setReports(response.data);
                 setLoadingReports(false);
             } catch (error) {
-                console.error('Error fetching quarter reports:', error);
                 setLoadingReports(false);
             }
         };
@@ -71,7 +70,6 @@ const FinancialOverview = () => {
             link.remove();
             window.URL.revokeObjectURL(url);
         } catch (error) {
-            console.error('Error downloading PDF:', error);
             alert('Failed to download PDF. Please try again.');
         }
     };

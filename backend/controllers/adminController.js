@@ -14,7 +14,6 @@ export const AdminLogin = async (req, res) => {
         }
         res.status(200).json({ msg: "User logged in" });
     } catch (err) {
-        console.error(err);
         res.status(500).send("Error logging in User");
     }
 };
@@ -31,7 +30,6 @@ export const getUsers = async (req, res) => {
 
         res.status(200).json(formattedUsers);
     } catch (err) {
-        console.error(err);
         res.status(500).send("Error getting users");
     }
 };
@@ -54,7 +52,6 @@ export const updateUser = async (req, res) => {
 
         res.status(200).json(updatedUser);
     } catch (error) {
-        console.error("Error updating user:", error);
         res.status(500).send("Error updating user");
     }
 };

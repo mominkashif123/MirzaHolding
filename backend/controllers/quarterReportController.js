@@ -43,7 +43,6 @@ export const uploadQuarterReport = async (req, res) => {
             return res.status(201).json({ message: 'Quarter report uploaded successfully', report: { quarter, year, title, size } });
         }
     } catch (error) {
-        console.error('Error uploading quarter report:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 };
@@ -54,7 +53,6 @@ export const getAllQuarterReports = async (req, res) => {
         const reports = await QuarterReport.find({}, 'quarter year title size uploadedAt').sort({ year: -1, quarter: -1 });
         res.status(200).json(reports);
     } catch (error) {
-        console.error('Error fetching quarter reports:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 };
@@ -82,7 +80,6 @@ export const getQuarterReportPDF = async (req, res) => {
         // Send PDF buffer
         res.send(report.pdfData);
     } catch (error) {
-        console.error('Error fetching quarter report PDF:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 };
@@ -100,7 +97,6 @@ export const deleteQuarterReport = async (req, res) => {
 
         res.status(200).json({ message: 'Quarter report deleted successfully' });
     } catch (error) {
-        console.error('Error deleting quarter report:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 };

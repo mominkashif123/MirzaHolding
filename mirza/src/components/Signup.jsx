@@ -38,7 +38,6 @@ const SignupPage = () => {
                 setAlert({ type: "error", message: "Signup failed. Please try again." });
             }
         } catch (error) {
-            console.error("Error signing up:", error);
             if (error.response?.status === 400 && error.response?.data?.error === "User already exists.") {
                 setAlert({ type: "error", message: "User already exists." });
             } else {

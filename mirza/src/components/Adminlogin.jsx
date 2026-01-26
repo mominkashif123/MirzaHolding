@@ -70,7 +70,6 @@ const AdminLogin = () => {
                 setAlert({ type: "error", message: "Login failed. Please try again." });
             }
         } catch (error) {
-            console.error("Error logging in:", error);
             setAlert({ type: "error", message: "Login failed. Please try again." });
         }
     };

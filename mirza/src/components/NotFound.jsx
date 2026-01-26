@@ -5,13 +5,6 @@ import { Home, ArrowLeft, AlertCircle } from "lucide-react";
 const NotFound = () => {
   const location = useLocation();
 
-  useEffect(() => {
-    console.error(
-      "404 Error: User attempted to access non-existent route:",
-      location.pathname
-    );
-  }, [location.pathname]);
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex items-center justify-center relative overflow-hidden">
       {/* Animated background elements */}
