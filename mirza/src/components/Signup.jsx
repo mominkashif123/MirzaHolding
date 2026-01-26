@@ -26,11 +26,11 @@ const SignupPage = () => {
         }
         
         try {
-            // const response = await axios.post("https://mirza-holding.onrender.com/api/signup", {
-            const response = await axios.post("http://localhost:5000/api/signup", {
+            const response = await axios.post("https://mirza-holding.onrender.com/api/signup", {
                 email,
                 password,
             });
+
             if (response.status === 200) {
                 setAlert({ type: "success", message: "Signup successful!" });
                 setTimeout(() => navigate("/login"), 2000);
