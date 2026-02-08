@@ -1,9 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, X, TrendingUp } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Menu, X, TrendingUp, LogOut } from 'lucide-react';
 
 const Navbar = () => {
+    const navigate = useNavigate();
+    const isLoggedIn = typeof window !== 'undefined' && !!sessionStorage.getItem('user');
+    const isMutualFundUser = typeof window !== 'undefined' && sessionStorage.getItem('isMutualFundUser') === 'true';
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
     const [lastScrollTop, setLastScrollTop] = useState(0);
@@ -95,14 +98,37 @@ const Navbar = () => {
                                 <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></div>
                             </Link>
                         ))}
-                        
-                        {/* Login Button */}
-                        <Link
-                            to="/login"
-                            className="ml-4 px-4 xl:px-6 py-2 xl:py-2.5 bg-white text-black font-semibold rounded-xl hover:bg-gray-200 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl text-sm xl:text-base"
-                        >
-                            Login
-                        </Link>
+                        {isLoggedIn && (
+                            <Link
+                                to={isMutualFundUser ? '/funds-dashboard' : '/dashboard'}
+                                className="relative px-3 xl:px-4 py-2 text-gray-300 hover:text-white transition-all duration-300 group rounded-lg hover:bg-white/5 text-sm xl:text-base"
+                            >
+                                <span className="relative z-10 font-medium">Dashboard</span>
+                                <div className="absolute inset-0 bg-gray-700/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></div>
+                            </Link>
+                        )}
+                        {/* Login / Logout */}
+                        {isLoggedIn ? (
+                            <button
+                                onClick={() => {
+                                    sessionStorage.removeItem('user');
+                                    sessionStorage.removeItem('isMutualFundUser');
+                                    navigate('/');
+                                }}
+                                className="ml-4 px-4 xl:px-6 py-2 xl:py-2.5 bg-white text-black font-semibold rounded-xl hover:bg-gray-200 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl text-sm xl:text-base flex items-center gap-2"
+                            >
+                                <LogOut className="w-4 h-4" />
+                                Logout
+                            </button>
+                        ) : (
+                            <Link
+                                to="/login"
+                                className="ml-4 px-4 xl:px-6 py-2 xl:py-2.5 bg-white text-black font-semibold rounded-xl hover:bg-gray-200 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl text-sm xl:text-base"
+                            >
+                                Login
+                            </Link>
+                        )}
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -142,14 +168,37 @@ const Navbar = () => {
                             {link.label}
                         </Link>
                     ))}
-                    
-                    <Link
-                        to="/login"
-                        className="block mx-4 mt-6 px-6 py-3 bg-white text-black font-semibold rounded-xl text-center hover:bg-gray-200 transform hover:scale-105 transition-all duration-300"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                        Login
-                    </Link>
+                    {isLoggedIn && (
+                        <Link
+                            to={isMutualFundUser ? '/funds-dashboard' : '/dashboard'}
+                            className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all duration-200 transform hover:translate-x-2"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                            Dashboard
+                        </Link>
+                    )}
+                    {isLoggedIn ? (
+                        <button
+                            onClick={() => {
+                                sessionStorage.removeItem('user');
+                                sessionStorage.removeItem('isMutualFundUser');
+                                setIsMobileMenuOpen(false);
+                                navigate('/');
+                            }}
+                            className="flex mx-4 mt-6 w-[calc(100%-2rem)] px-6 py-3 bg-white text-black font-semibold rounded-xl text-center hover:bg-gray-200 items-center justify-center gap-2"
+                        >
+                            <LogOut className="w-4 h-4" />
+                            Logout
+                        </button>
+                    ) : (
+                        <Link
+                            to="/login"
+                            className="block mx-4 mt-6 px-6 py-3 bg-white text-black font-semibold rounded-xl text-center hover:bg-gray-200 transform hover:scale-105 transition-all duration-300"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                            Login
+                        </Link>
+                    )}
                 </div>
             </div>
         </nav>

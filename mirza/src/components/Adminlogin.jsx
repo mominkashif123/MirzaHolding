@@ -57,8 +57,8 @@ const AdminLogin = () => {
         event.preventDefault();
 
         try {
-            // const response = await axios.post("http://localhost:5000/api/adminlogin", {
-            const response = await axios.post("https://mirza-holding.onrender.com/api/adminlogin", {
+            const response = await axios.post("http://localhost:5000/api/adminlogin", {
+            // const response = await axios.post("https://mirza-holding.onrender.com/api/adminlogin", {
                 email,
                 password,
             });

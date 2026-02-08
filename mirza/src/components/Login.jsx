@@ -18,14 +18,22 @@ const LoginPage = () => {
         setIsLoading(true);
 
         try {
-            const response = await axios.post("https://mirza-holding.onrender.com/api/login", {
+            // const response = await axios.post("https://mirza-holding.onrender.com/api/login", {
+            const response = await axios.post("http://localhost:5000/api/login", {
                 email,
                 password,
             });
             if (response.status === 200) {
                 setAlert({ type: "success", message: "Login successful!" });
-                sessionStorage.setItem("user", email);  
-                setTimeout(() => navigate("/dashboard"), 2000);
+                sessionStorage.setItem("user", email);
+                const isMutual = !!response.data?.isMutual;
+                if (isMutual) {
+                    sessionStorage.setItem("isMutualFundUser", "true");
+                    setTimeout(() => navigate("/funds-dashboard"), 2000);
+                } else {
+                    sessionStorage.removeItem("isMutualFundUser");
+                    setTimeout(() => navigate("/dashboard"), 2000);
+                }
             } else {
                 setAlert({ type: "error", message: "Login failed. Please try again." });
             }

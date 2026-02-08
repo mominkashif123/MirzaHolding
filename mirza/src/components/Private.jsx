@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { Wallet, TrendingUp, PiggyBank, DollarSign } from "lucide-react";
+import { TrendingUp, PiggyBank, DollarSign, PieChart } from "lucide-react";
 
-const ServiceCard = ({ name, description, icon: IconComponent, index }) => {
+const ServiceCard = ({ name, description, icon: IconComponent, index, to }) => {
     const [isInView, setIsInView] = useState(false);
 
     useEffect(() => {
@@ -10,38 +11,38 @@ const ServiceCard = ({ name, description, icon: IconComponent, index }) => {
         return () => clearTimeout(timer);
     }, [index]);
 
-    return (
-        <div 
-            className={`group relative bg-gradient-to-br from-white/90 to-gray-50/90 backdrop-blur-xl p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105 border border-gray-200/50 overflow-hidden h-full
-            ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-        >
-            {/* Background gradient overlay */}
+    const cardClassName = `group relative bg-gradient-to-br from-white/90 to-gray-50/90 backdrop-blur-xl p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105 border border-gray-200/50 overflow-hidden h-full
+            ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'} ${to ? 'cursor-pointer' : ''}`;
+
+    const cardContent = (
+        <>
             <div className="absolute inset-0 bg-gradient-to-br from-black/5 to-gray-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            
-            {/* Floating elements */}
-            
             <div className="relative z-10 flex flex-col h-full">
                 <div className="flex items-center justify-between mb-6">
                     <div className="p-4 bg-gradient-to-br from-black to-gray-800 rounded-2xl shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:rotate-3">
                         <IconComponent className="w-8 h-8 text-white" />
                     </div>
                 </div>
-                
                 <h3 className="text-2xl font-bold text-black mb-4 group-hover:text-gray-800 transition-colors duration-300">
                     {name}
                 </h3>
-                
                 <p className="text-gray-700 text-base leading-relaxed flex-grow group-hover:text-gray-800 transition-colors duration-300">
                     {description}
                 </p>
-                
-                <div className="mt-6 flex items-center text-black/60 group-hover:text-black transition-colors duration-300">
-                    {/* <Star className="w-4 h-4 mr-2" />
-                    <span className="text-sm font-medium">Premium Service</span> */}
-                </div>
+                <div className="mt-6 flex items-center text-black/60 group-hover:text-black transition-colors duration-300" />
             </div>
-        </div>
+        </>
     );
+
+    if (to) {
+        return (
+            <Link to={to} className="block h-full">
+                <div className={cardClassName}>{cardContent}</div>
+            </Link>
+        );
+    }
+
+    return <div className={cardClassName}>{cardContent}</div>;
 };
 
 const PrivateServices = () => {
@@ -66,7 +67,8 @@ const PrivateServices = () => {
         {
             name: "Mutual Funds",
             description: "Diversify your portfolio with our carefully curated mutual fund options. Our investment experts manage diversified portfolios designed to provide steady returns while minimizing risk through professional fund management.",
-            icon: Wallet
+            icon: PieChart,
+            to: "/funds"
         },
         {
             name: "Wealth Management",
@@ -123,6 +125,7 @@ const PrivateServices = () => {
                                 description={service.description}
                                 icon={service.icon}
                                 index={index}
+                                to={service.to}
                             />
                         ))}
                     </div>

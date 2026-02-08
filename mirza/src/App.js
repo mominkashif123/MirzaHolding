@@ -13,6 +13,8 @@ import AdminLogin from './components/Adminlogin.jsx';
 import AdminDashboard from './components/Admindashboard.jsx';
 import FinancialOverview from './components/Finance.jsx';
 import RetailServices from './components/Retail.jsx';
+import MutualFunds from './components/MutualFunds.jsx';
+import FundsDashboard from './components/FundsDashboard.jsx';
 import NotFound from './components/NotFound.jsx';
 
 const App = () => {
@@ -26,6 +28,12 @@ const App = () => {
                 <Route path="/retail" element={<RetailServices />} />
                 <Route path="/contact" element={<ContactUs />} />
                 <Route path="/finance" element={<FinancialOverview />} />
+                <Route path="/funds" element={<MutualFunds />} />
+                <Route path="/funds-dashboard" element={
+                    <ProtectedRoute fundsOnly>
+                        <FundsDashboard />
+                    </ProtectedRoute>
+                } />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/dashboard" element={

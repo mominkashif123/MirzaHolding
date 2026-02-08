@@ -2,17 +2,16 @@ import express from "express";
 import userRoutes from './routes/userRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import quarterReportRoutes from './routes/quarterReportRoutes.js';
+import fundRoutes from './routes/fundRoutes.js';
+import adminFundRoutes from './routes/adminFundRoutes.js';
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
-
 dotenv.config();
 
-// Connect to MongoDB
+// Connect to MongoDB (no fund seed – admin creates funds)
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
-    // MongoDB connected
-  })
+  .then(() => {})
   .catch((err) => {
     // Error connecting to MongoDB
   });
@@ -45,6 +44,8 @@ app.use(cors({
 app.use("/api", userRoutes);
 app.use("/api", adminRoutes);
 app.use("/api", quarterReportRoutes);
+app.use("/api", fundRoutes);
+app.use("/api", adminFundRoutes);
 
 app.get("/api/psx", async (req, res) => {
   const symbols = ['KSE100', 'KEL', 'PSO', 'OGDC', 'KSE30']; 

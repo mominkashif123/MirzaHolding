@@ -2,7 +2,7 @@ import User from '../models/User.js';
 import mongoose from 'mongoose';
 
 export const Signup = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, isMutual } = req.body;
 
     if (!email || !password) {
         return res.status(400).json({ error: 'Email and password are required.' });
@@ -14,7 +14,11 @@ export const Signup = async (req, res) => {
             return res.status(400).json({ error: 'User already exists.' });
         }
 
-        await User.create({ email, password });
+        await User.create({
+            email,
+            password,
+            isMutual: Boolean(isMutual),
+        });
 
         res.status(200).json({ message: 'User created successfully!' });
 
@@ -33,9 +37,28 @@ export const Login = async (req, res) => {
         if (user.password !== password) {
             return res.status(400).json({ msg: "Invalid password" });
         }
-        res.status(200).json({ msg: "User logged in" });
+        res.status(200).json({ msg: "User logged in", isMutual: user.isMutual });
     } catch (err) {
         res.status(500).send("Error logging in User");
+    }
+};
+
+export const LoginFunds = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ msg: "User does not exist" });
+        }
+        if (user.password !== password) {
+            return res.status(400).json({ msg: "Invalid password" });
+        }
+        if (!user.isMutual) {
+            return res.status(403).json({ msg: "This account is not registered for mutual funds. Please use the general login or sign up for mutual funds." });
+        }
+        res.status(200).json({ msg: "User logged in", isMutual: true });
+    } catch (err) {
+        res.status(500).json({ error: "Error logging in" });
     }
 };
 
@@ -58,7 +81,7 @@ export const UserData = async (req, res) => {
             : user.amount;
 
         const transactions = user.transactions.map(transaction => transaction);
-        res.json({ amount, transactions, premium: user.premium });
+        res.json({ amount, transactions, premium: user.premium, isMutual: user.isMutual });
     } catch (error) {
         res.status(500).json({ message: 'Error fetching user data' });
     }

@@ -9,6 +9,7 @@ const SignupPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const [isMutual, setIsMutual] = useState(false);
     const [alert, setAlert] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
@@ -26,9 +27,11 @@ const SignupPage = () => {
         }
         
         try {
-            const response = await axios.post("https://mirza-holding.onrender.com/api/signup", {
+            // const response = await axios.post("https://mirza-holding.onrender.com/api/signup", {
+            const response = await axios.post("http://localhost:5000/api/signup", {
                 email,
                 password,
+                isMutual,
             });
 
             if (response.status === 200) {
@@ -193,6 +196,37 @@ const SignupPage = () => {
                                     </div>
                                     <p className="text-xs text-gray-500 mt-2">
                                         Password must be 8+ characters with uppercase letter and special character
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                                        Account type
+                                    </label>
+                                    <div className="flex gap-6">
+                                        <label className="flex items-center gap-2 cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="accountType"
+                                                checked={!isMutual}
+                                                onChange={() => setIsMutual(false)}
+                                                className="w-4 h-4 text-black border-gray-300 focus:ring-black"
+                                            />
+                                            <span className="text-gray-700">General account</span>
+                                        </label>
+                                        <label className="flex items-center gap-2 cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="accountType"
+                                                checked={isMutual}
+                                                onChange={() => setIsMutual(true)}
+                                                className="w-4 h-4 text-black border-gray-300 focus:ring-black"
+                                            />
+                                            <span className="text-gray-700">Mutual funds account</span>
+                                        </label>
+                                    </div>
+                                    <p className="text-xs text-gray-500 mt-1">
+                                        Mutual funds account gives access to the funds dashboard (NAV, units, SIP, etc.)
                                     </p>
                                 </div>
 

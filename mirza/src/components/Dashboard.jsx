@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
     DollarSign, TrendingUp, Activity, LogOut, User, Wallet, BarChart3,
     Calendar,
@@ -27,8 +27,21 @@ const Dashboard = () => {
     const [currentDateTime, setCurrentDateTime] = useState(new Date());
     const useremail = sessionStorage.getItem("user");
     const navigate = useNavigate();
+    const location = useLocation();
+    const isMutualFundUser = sessionStorage.getItem("isMutualFundUser") === "true";
+    const unauthorizedFromFunds = location.state?.unauthorizedFromFunds;
 
     useEffect(() => {
+        if (isMutualFundUser) {
+            const t = setTimeout(() => {
+                navigate("/funds-dashboard", { replace: true });
+            }, 2500);
+            return () => clearTimeout(t);
+        }
+    }, [isMutualFundUser, navigate]);
+
+    useEffect(() => {
+        if (isMutualFundUser) return;
         const timer = setInterval(() => {
             setCurrentDateTime(new Date());
         }, 1000);
@@ -45,8 +58,8 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get(`https://mirza-holding.onrender.com/api/data?email=${encodeURIComponent(useremail)}`);
-                // const response = await axios.get(`http://localhost:5000/api/data?email=${encodeURIComponent(useremail)}`);
+                // const response = await axios.get(`https://mirza-holding.onrender.com/api/data?email=${encodeURIComponent(useremail)}`);
+                const response = await axios.get(`http://localhost:5000/api/data?email=${encodeURIComponent(useremail)}`);
                 setUserData(response.data);
                 setLoading(false);
             } catch (error) {
@@ -69,12 +82,13 @@ const Dashboard = () => {
         };
 
         fetchUserData();
-    }, [useremail]);
+    }, [useremail, isMutualFundUser]);
 
     const handleLogout = () => {
         showToast('success', 'Logging out...');
         setTimeout(() => {
             sessionStorage.removeItem("user");
+            sessionStorage.removeItem("isMutualFundUser");
             navigate("/login");
         }, 2000);
     };
@@ -109,8 +123,8 @@ const Dashboard = () => {
 
         try {
             // Placeholder API call - replace with actual endpoint
-            // await axios.post('http://localhost:5000/api/changePassword', {
-            await axios.post('https://mirza-holding.onrender.com/api/changePassword', {
+            await axios.post('http://localhost:5000/api/changePassword', {
+            // await axios.post('https://mirza-holding.onrender.com/api/changePassword', {
                 email: useremail,
                 currentPassword: passwordData.currentPassword,
                 newPassword: passwordData.newPassword
@@ -222,6 +236,18 @@ const Dashboard = () => {
         );
     };
 
+    if (isMutualFundUser) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 flex items-center justify-center px-4">
+                <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 shadow-xl max-w-md text-center">
+                    <AlertCircle className="w-12 h-12 text-amber-600 mx-auto mb-3" />
+                    <p className="text-amber-800 font-semibold">Unauthorized</p>
+                    <p className="text-amber-700 text-sm mt-1">This dashboard is for general accounts. Redirecting to your Mutual Funds Dashboard...</p>
+                </div>
+            </div>
+        );
+    }
+
     if (loading) {
         return (
             <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 flex items-center justify-center">
@@ -263,6 +289,11 @@ const Dashboard = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+            {unauthorizedFromFunds && (
+                <div className="bg-amber-50 border-b border-amber-200 px-4 py-2 text-center text-sm text-amber-800">
+                    Unauthorized. The Mutual Funds dashboard is for mutual fund accounts only. This is your dashboard.
+                </div>
+            )}
             {/* Top Navigation */}
             <div className="bg-white/80 backdrop-blur-xl border-b border-gray-200 sticky top-0 z-40">
                 <div className="max-w-7xl mx-auto px-6 py-4">

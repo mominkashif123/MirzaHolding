@@ -23,9 +23,11 @@ export const getUsers = async (req, res) => {
         const users = await User.find();
 
         const formattedUsers = users.map(user => ({
+            _id: user._id,
             email: user.email,
-            amount: user.amount.toString(), 
-            transactions: user.transactions
+            amount: user.amount.toString(),
+            transactions: user.transactions,
+            isMutual: !!user.isMutual,
         }));
 
         res.status(200).json(formattedUsers);
@@ -35,15 +37,25 @@ export const getUsers = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
-    const { email } = req.params; 
-    const { amount, transactions } = req.body;
+    const { email } = req.params;
+    const { amount, transactions, isMutual } = req.body;
 
     try {
-        const amountDecimal = parseFloat(amount);
+        const updateFields = {};
+        if (amount !== undefined) {
+            const n = parseFloat(amount);
+            if (!isNaN(n)) updateFields.amount = n;
+        }
+        if (transactions !== undefined) {
+            updateFields.transactions = transactions;
+        }
+        if (typeof isMutual === "boolean") {
+            updateFields.isMutual = isMutual;
+        }
         const updatedUser = await User.findOneAndUpdate(
-            { email: email }, 
-            { amount: amountDecimal, transactions },
-            { new: true } 
+            { email: email },
+            updateFields,
+            { new: true }
         );
 
         if (!updatedUser) {

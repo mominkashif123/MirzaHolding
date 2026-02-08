@@ -7,6 +7,7 @@ const UserSchema = new Schema({
     amount: { type: Schema.Types.Decimal128, default: 0 },
     transactions: { type: [String], default: [] },
     premium: { type: Boolean, default: false },
+    isMutual: { type: Boolean, default: false },
 },
 );
 
