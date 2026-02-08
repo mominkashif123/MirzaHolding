@@ -27,8 +27,8 @@ const SignupPage = () => {
         }
         
         try {
-            // const response = await axios.post("https://mirza-holding.onrender.com/api/signup", {
-            const response = await axios.post("http://localhost:5000/api/signup", {
+            const response = await axios.post("https://mirza-holding.onrender.com/api/signup", {
+            // const response = await axios.post("http://localhost:5000/api/signup", {
                 email,
                 password,
                 isMutual,

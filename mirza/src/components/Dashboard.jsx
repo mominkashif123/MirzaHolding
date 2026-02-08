@@ -58,8 +58,8 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                // const response = await axios.get(`https://mirza-holding.onrender.com/api/data?email=${encodeURIComponent(useremail)}`);
-                const response = await axios.get(`http://localhost:5000/api/data?email=${encodeURIComponent(useremail)}`);
+                const response = await axios.get(`https://mirza-holding.onrender.com/api/data?email=${encodeURIComponent(useremail)}`);
+                // const response = await axios.get(`http://localhost:5000/api/data?email=${encodeURIComponent(useremail)}`);
                 setUserData(response.data);
                 setLoading(false);
             } catch (error) {
@@ -123,8 +123,8 @@ const Dashboard = () => {
 
         try {
             // Placeholder API call - replace with actual endpoint
-            await axios.post('http://localhost:5000/api/changePassword', {
-            // await axios.post('https://mirza-holding.onrender.com/api/changePassword', {
+            // await axios.post('http://localhost:5000/api/changePassword', {
+            await axios.post('https://mirza-holding.onrender.com/api/changePassword', {
                 email: useremail,
                 currentPassword: passwordData.currentPassword,
                 newPassword: passwordData.newPassword

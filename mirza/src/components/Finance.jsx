@@ -35,8 +35,8 @@ const FinancialOverview = () => {
     useEffect(() => {
         const fetchQuarterReports = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/quarterreports');
-                // const response = await axios.get('https://mirza-holding.onrender.com/api/quarterreports');
+                const response = await axios.get('https://mirza-holding.onrender.com/api/quarterreports');
+                // const response = await axios.get('http://localhost:5000/api/quarterreports');
                 setReports(response.data);
                 setLoadingReports(false);
             } catch (error) {
@@ -50,8 +50,8 @@ const FinancialOverview = () => {
     // Handle PDF download
     const handleDownloadPDF = async (quarter) => {
         try {
-            const response = await axios.get(`http://localhost:5000/api/quarterreports/${quarter}`, {
-            // const response = await axios.get(`https://mirza-holding.onrender.com/api/quarterreports/${quarter}`, {
+            // const response = await axios.get(`http://localhost:5000/api/quarterreports/${quarter}`, {
+            const response = await axios.get(`https://mirza-holding.onrender.com/api/quarterreports/${quarter}`, {
                 responseType: 'blob'
             });
             

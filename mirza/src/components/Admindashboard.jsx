@@ -17,7 +17,8 @@ import {
 } from "lucide-react";
 import EditUserModal from "./EditUser.jsx";
 
-const API = "http://localhost:5000/api";
+const API = "https://mirza-holding.onrender.com/api";
+// const API = "http://localhost:5000/api";
 
 const AdminDashboard = () => {
     const [activeTab, setActiveTab] = useState("general");

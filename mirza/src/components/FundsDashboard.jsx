@@ -25,8 +25,9 @@ const FundsDashboard = () => {
         const fetchData = async () => {
             try {
                 setError(null);
+                // `http://localhost:5000/api/portfolio-summary?email=${encodeURIComponent(useremail)}`
                 const res = await axios.get(
-                    `http://localhost:5000/api/portfolio-summary?email=${encodeURIComponent(useremail)}`
+                    `https://mirza-holding.onrender.com/api/portfolio-summary?email=${encodeURIComponent(useremail)}`
                 );
                 setData(res.data);
             } catch (err) {

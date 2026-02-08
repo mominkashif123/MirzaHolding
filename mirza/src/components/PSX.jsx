@@ -8,8 +8,8 @@ const PSXLivePrices = () => {
 
   const fetchStocks = async () => {
     try {
-      // const res = await fetch('https://mirza-holding.onrender.com/api/psx');
-      const res = await fetch('http://localhost:5000/api/psx');
+      const res = await fetch('https://mirza-holding.onrender.com/api/psx');
+      // const res = await fetch('http://localhost:5000/api/psx');
       const data = await res.json();
       setStocks(data);
       setIsLoading(false);

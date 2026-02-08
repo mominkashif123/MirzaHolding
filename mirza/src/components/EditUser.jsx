@@ -14,8 +14,9 @@ const EditUserModal = ({ user, onClose, onUpdate }) => {
         setLoading(true);
         try {
             const amountDecimal = parseFloat(amount);
+            // `http://localhost:5000/api/updateuser/${encodeURIComponent(user.email)}`
             const response = await axios.put(
-                `http://localhost:5000/api/updateuser/${encodeURIComponent(user.email)}`,
+                `https://mirza-holding.onrender.com/api/updateuser/${encodeURIComponent(user.email)}`,
                 {
                     amount: amountDecimal,
                     transactions: transactions.split("\n").filter(Boolean),
