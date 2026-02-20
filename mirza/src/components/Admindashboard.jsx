@@ -21,6 +21,15 @@ const API = "https://mirza-holding.onrender.com/api";
 // const API = "http://localhost:5000/api";
 
 const AdminDashboard = () => {
+    // Helper function to safely convert amount (handles Decimal128 objects)
+    const formatAmount = (amountValue) => {
+        if (amountValue == null || amountValue === "") return "0";
+        if (typeof amountValue === "object" && amountValue.$numberDecimal) {
+            return amountValue.$numberDecimal;
+        }
+        return String(amountValue);
+    };
+
     const [activeTab, setActiveTab] = useState("general");
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -100,8 +109,13 @@ const AdminDashboard = () => {
     };
 
     const handleUpdateUser = (updatedUser) => {
+        // Ensure amount is converted to string if it's a Decimal128 object
+        const safeUpdatedUser = {
+            ...updatedUser,
+            amount: formatAmount(updatedUser.amount),
+        };
         setUsers((prev) =>
-            prev.map((u) => (u.email === updatedUser.email ? { ...u, ...updatedUser, isMutual: updatedUser.isMutual } : u))
+            prev.map((u) => (u.email === safeUpdatedUser.email ? { ...u, ...safeUpdatedUser, isMutual: safeUpdatedUser.isMutual } : u))
         );
         handleCloseModal();
     };
@@ -405,7 +419,7 @@ const AdminDashboard = () => {
                                     >
                                         <h2 className="text-lg font-semibold text-black truncate">{user.email}</h2>
                                         <p className="text-gray-600 text-sm">
-                                            <strong>Amount:</strong> PKR {user.amount}
+                                            <strong>Amount:</strong> PKR {formatAmount(user.amount)}
                                         </p>
                                         <p className="text-gray-600 text-sm mt-1">
                                             <strong>Transactions:</strong> {user.transactions?.length ?? 0}

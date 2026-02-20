@@ -38,31 +38,67 @@ export const getUsers = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     const { email } = req.params;
-    const { amount, transactions, isMutual } = req.body;
+    const { amountChange, transactionsToAdd, transactionsToRemove, isMutual } = req.body;
 
     try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
+
         const updateFields = {};
-        if (amount !== undefined) {
-            const n = parseFloat(amount);
-            if (!isNaN(n)) updateFields.amount = n;
+        
+        // Handle amount change (add/subtract)
+        if (amountChange !== undefined && amountChange !== null && amountChange !== "") {
+            const change = parseFloat(amountChange);
+            if (!isNaN(change)) {
+                const currentAmount = parseFloat(user.amount.toString());
+                const newAmount = currentAmount + change;
+                updateFields.amount = newAmount;
+            }
         }
-        if (transactions !== undefined) {
-            updateFields.transactions = transactions;
+        
+        // Handle transactions: add new ones and remove specified ones
+        if (transactionsToAdd !== undefined || transactionsToRemove !== undefined) {
+            let updatedTransactions = [...(user.transactions || [])];
+            
+            // Remove transactions
+            if (Array.isArray(transactionsToRemove) && transactionsToRemove.length > 0) {
+                updatedTransactions = updatedTransactions.filter(
+                    (t, index) => !transactionsToRemove.includes(index)
+                );
+            }
+            
+            // Add new transactions
+            if (Array.isArray(transactionsToAdd) && transactionsToAdd.length > 0) {
+                updatedTransactions = [...updatedTransactions, ...transactionsToAdd.filter(Boolean)];
+            }
+            
+            updateFields.transactions = updatedTransactions;
         }
+        
+        // Handle account type change
         if (typeof isMutual === "boolean") {
             updateFields.isMutual = isMutual;
         }
+        
         const updatedUser = await User.findOneAndUpdate(
             { email: email },
             updateFields,
             { new: true }
         );
 
-        if (!updatedUser) {
-            return res.status(404).send("User not found");
-        }
+        // Convert Decimal128 to string for JSON response
+        const formattedUser = {
+            _id: updatedUser._id,
+            email: updatedUser.email,
+            amount: updatedUser.amount.toString(),
+            transactions: updatedUser.transactions,
+            isMutual: !!updatedUser.isMutual,
+            premium: updatedUser.premium,
+        };
 
-        res.status(200).json(updatedUser);
+        res.status(200).json(formattedUser);
     } catch (error) {
         res.status(500).send("Error updating user");
     }
